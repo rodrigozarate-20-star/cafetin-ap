@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Dueño - Cafetín</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .flex-container { display: flex; gap: 20px; flex-wrap: wrap; }
+        .columna { flex: 1; min-width: 300px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .mesa-admin { padding: 10px; border-radius: 5px; margin-bottom: 5px; text-align: center; }
+        .libre { background-color: #d4edda; }
+        .reservada { background-color: #f8d7da; }
+        button { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Panel de Administración (Dueño)</h1>
+
+    <div class="flex-container">
+        <!-- Columna de Pedidos -->
+        <div class="columna">
+            <h2>📌 Pedidos Recibidos en Tiempo Real</h2>
+            <div id="pedidos-container"></div>
+        </div>
+
+        <!-- Columna de Mesas -->
+        <div class="columna">
+            <h2>🪑 Estado de las Mesas</h2>
+            <div id="mesas-admin-container"></div>
+        </div>
+
+        <!-- Columna de Stock -->
+        <div class="columna">
+            <h2>📦 Stock de Productos</h2>
+            <div id="productos-admin-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        // Cargar pedidos al inicio o al recibir nuevo pedido
+        socket.on('cargar_pedidos', (pedidos) => {
+            const container = document.getElementById('pedidos-container');
+            if (!container) return;
+            container.innerHTML = '';
+            if (pedidos.length === 0) {
+                container.innerHTML = '<p>No hay pedidos pendientes.</p>';
+                return;
+            }
+            pedidos.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                let itemsTexto = p.items.map(i => i.nombre + ' x' + i.cantidad).join(', ');
+                div.innerHTML = 
+                    '<p><strong>Cliente:</strong> ' + p.cliente + '</p>' +
+                    '<p><strong>Pedido:</strong> ' + itemsTexto + '</p>' +
+                    '<p><strong>Total:</strong> S/ ' + p.total.toFixed(2) + '</p>' +
+                    '<p><small>' + (p.fecha || '') + '</small></p>';
+                container.appendChild(div);
+            });
+        });
+
+        // Escuchar cuando entra un nuevo pedido en vivo
+        socket.on('nuevo_pedido_recibido', (pedido) => {
+            alert('¡Nuevo pedido recibido de ' + pedido.cliente + '!');
+        });
+
+        // Actualizar mesas en panel admin
+        socket.on('cargar_mesas', (mesas) => {
+            const container = document.getElementById('mesas-admin-container');
+            if (!container) return;
+            container.innerHTML = '';
+            mesas.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'mesa-admin ' + m.estado.toLowerCase();
+                let botonLiberar = m.estado === 'Reservada' ? '<button onclick="liberarMesa(' + m.id + ')">Liberar</button>' : '';
+                div.innerHTML = '<span>Mesa ' + m.numero + ' - <strong>' + m.estado + '</strong></span> ' + botonLiberar;
+                container.appendChild(div);
+            });
+        });
+
+        // Actualizar stock en panel admin
+        socket.on('cargar_productos', (productos) => {
+            const container = document.getElementById('productos-admin-container');
+            if (!container) return;
+            container.innerHTML = '';
+            productos.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = '<p><strong>' + p.nombre + '</strong> - Stock actual: ' + p.stock + '</p>';
+                container.appendChild(div);
+            });
+        });
+
+        function liberarMesa(id) {
+            socket.emit('liberar_mesa', id);
+        }
+    </script>
+</body>
+</html>

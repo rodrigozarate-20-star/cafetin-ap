@@ -1,0 +1,14 @@
+{
+  "name": "cafetin-app",
+  "version": "1.0.0",
+  "description": "Sistema de Reservas y Pedidos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "socket.io": "^4.8.3",
+    "sqlite3": "^6.0.1"
+  }
+}
