@@ -48,3 +48,26 @@ window.liberarMesa = function(idMesa) {
     })
     .catch(err => console.error("Error al intentar liberar la mesa:", err));
 };
+mostrarNotificacionLiberacion(idMesa)
+
+// Aporte adicional: Función de notificación al liberar mesa
+window.mostrarNotificacionLiberacion = function(idMesa) {
+    const mensaje = document.createElement('div');
+    mensaje.innerText = ✅¡Mesa ${idMesa} liberada correctamente!;
+    mensaje.style.position = 'fixed';
+    mensaje.style.top = '20px';
+    mensaje.style.right = '20px';
+    mensaje.style.backgroundColor = '#28a745';
+    mensaje.style.color = '#fff';
+    mensaje.style.padding = '12px 20px';
+    mensaje.style.borderRadius = '8px';
+    mensaje.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    mensaje.style.zIndex = '1000';
+    mensaje.style.fontFamily = 'sans-serif';
+
+    document.body.appendChild(mensaje);
+
+    setTimeout(() => {
+        mensaje.remove();
+    }, 3000);
+};
