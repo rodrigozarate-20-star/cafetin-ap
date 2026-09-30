@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafetín - Realizar Pedido</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
-        .grid { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .mesa, .producto-card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; background: white; text-align: center; }
-        .mesa { cursor: pointer; }
-        .mesa.libre { background-color: #d4edda; }
-        .mesa.reservada { background-color: #f8d7da; cursor: not-allowed; }
-        .producto-card { min-width: 150px; }
-        button { background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cafetín App - gestión de mesas y pedidos en tiempo real">
+  <title>Cafetín App | Reservas y pedidos</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="/estilo.css">
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">☕</span><div><strong>Cafetín</strong><small>Reservas & pedidos</small></div></div>
+    <a class="admin-link" href="/admin.html">Panel del dueño <span>→</span></a>
+  </header>
 
-    <h1>Cafetín Web - Realizar Pedido</h1>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">ATENCIÓN EN TIEMPO REAL</span>
+        <h1>Tu mesa, tu pedido,<br><em>sin complicaciones.</em></h1>
+        <p>Selecciona una mesa disponible, arma tu pedido y envíalo al cafetín en segundos.</p>
+      </div>
+      <div class="hero-badge"><span class="pulse"></span> Sistema conectado</div>
+    </section>
 
-    <h2>1. Selección de Mesa</h2>
-    <input type="text" id="nombre-cliente" placeholder="Tu Nombre" style="padding: 8px; margin-bottom: 10px;"><br>
-    <p><strong>Mesa elegida:</strong> <span id="mesa-elegida">Ninguna</span></p>
-    <div id="mesas-container" class="grid"></div>
+    <section class="layout">
+      <div class="main-column">
+        <section class="panel">
+          <div class="section-head"><div><span class="step">01</span><div><h2>Elige tu mesa</h2><p>Las mesas se actualizan automáticamente.</p></div></div><span id="mesa-elegida" class="selection-pill">Ninguna</span></div>
+          <div id="mesas-container" class="tables-grid" aria-live="polite"></div>
+        </section>
 
-    <h2>2. Productos (Stock en tiempo real)</h2>
-    <div id="productos-container" class="grid"></div>
+        <section class="panel">
+          <div class="section-head"><div><span class="step">02</span><div><h2>Arma tu pedido</h2><p>Consulta el stock disponible en tiempo real.</p></div></div></div>
+          <div id="productos-container" class="products-grid"></div>
+        </section>
+      </div>
 
-    <h2>3. Tu Ticket de Consumo Total</h2>
-    <div id="resumen-pedido"></div>
-    <h3 id="total-consumo">Total: S/ 0.00</h3>
+      <aside class="order-panel">
+        <div class="order-head"><span class="step">03</span><div><h2>Tu pedido</h2><p>Revisa antes de enviar.</p></div></div>
+        <label for="nombre-cliente">Nombre del cliente</label>
+        <input id="nombre-cliente" class="input" type="text" maxlength="60" placeholder="Ej. Florcita">
+        <div id="resumen-pedido" class="cart-list"><div class="empty-state">Aún no agregas productos.</div></div>
+        <div class="total-row"><span>Total</span><strong id="total-consumo">S/ 0.00</strong></div>
+        <button id="confirmar-btn" class="primary-btn" type="button">Enviar pedido <span>→</span></button>
+        <p class="secure-note">● Los cambios se sincronizan en tiempo real</p>
+      </aside>
+    </section>
+  </main>
 
-    <button onclick="confirmarPedido()" style="padding: 10px 20px; font-size: 16px;">Enviar Pedido al Cafetín</button>
-
-    <script src="app.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
 </body>
 </html>

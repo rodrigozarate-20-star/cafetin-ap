@@ -1,105 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel del Dueño - Cafetín</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
-        .flex-container { display: flex; gap: 20px; flex-wrap: wrap; }
-        .columna { flex: 1; min-width: 300px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-        .mesa-admin { padding: 10px; border-radius: 5px; margin-bottom: 5px; text-align: center; }
-        .libre { background-color: #d4edda; }
-        .reservada { background-color: #f8d7da; }
-        button { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafetín App | Panel del dueño</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="/estilo.css">
 </head>
-<body>
+<body class="admin-page">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">☕</span><div><strong>Cafetín</strong><small>Panel de gestión</small></div></div>
+    <a class="admin-link" href="/">Vista cliente <span>→</span></a>
+  </header>
 
-    <h1>Panel de Administración (Dueño)</h1>
+  <main class="container">
+    <section class="admin-hero"><div><span class="eyebrow">CENTRO DE CONTROL</span><h1>Panel del dueño</h1><p>Supervisa pedidos, mesas y stock desde un solo lugar.</p></div><div class="live-chip"><span class="pulse"></span> Actualización en vivo</div></section>
 
-    <div class="flex-container">
-        <!-- Columna de Pedidos -->
-        <div class="columna">
-            <h2>📌 Pedidos Recibidos en Tiempo Real</h2>
-            <div id="pedidos-container"></div>
-        </div>
+    <section id="stats" class="stats-grid">
+      <article class="stat-card"><span>Mesas ocupadas</span><strong id="stat-mesas">—</strong><small id="stat-mesas-detail">cargando...</small></article>
+      <article class="stat-card"><span>Pedidos pendientes</span><strong id="stat-pedidos">—</strong><small>requieren atención</small></article>
+      <article class="stat-card"><span>Ventas registradas</span><strong id="stat-ventas">—</strong><small>pedidos no cancelados</small></article>
+      <article class="stat-card accent"><span>Estado</span><strong>ONLINE</strong><small>Socket.IO conectado</small></article>
+    </section>
 
-        <!-- Columna de Mesas -->
-        <div class="columna">
-            <h2>🪑 Estado de las Mesas</h2>
-            <div id="mesas-admin-container"></div>
-        </div>
+    <section class="admin-grid">
+      <section class="panel admin-panel"><div class="section-head"><div><span class="step">01</span><div><h2>Pedidos</h2><p>Actualizados automáticamente.</p></div></div></div><div id="pedidos-container" class="orders-list"></div></section>
+      <section class="panel admin-panel"><div class="section-head"><div><span class="step">02</span><div><h2>Mesas</h2><p>Libera una mesa cuando corresponda.</p></div></div></div><div id="mesas-admin-container" class="admin-tables"></div></section>
+    </section>
 
-        <!-- Columna de Stock -->
-        <div class="columna">
-            <h2>📦 Stock de Productos</h2>
-            <div id="productos-admin-container"></div>
-        </div>
-    </div>
+    <section class="panel"><div class="section-head"><div><span class="step">03</span><div><h2>Stock</h2><p>Inventario actual de productos.</p></div></div></div><div id="productos-admin-container" class="stock-grid"></div></section>
+  </main>
 
-    <script>
-        const socket = io();
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+    const socket = io();
+    const toast = (message, type='success') => { const el=document.getElementById('toast'); el.textContent=message; el.className=`toast show ${type}`; clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.className='toast',3000); };
+    const money = value => `S/ ${Number(value || 0).toFixed(2)}`;
 
-        // Cargar pedidos al inicio o al recibir nuevo pedido
-        socket.on('cargar_pedidos', (pedidos) => {
-            const container = document.getElementById('pedidos-container');
-            if (!container) return;
-            container.innerHTML = '';
-            if (pedidos.length === 0) {
-                container.innerHTML = '<p>No hay pedidos pendientes.</p>';
-                return;
-            }
-            pedidos.forEach(p => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                let itemsTexto = p.items.map(i => i.nombre + ' x' + i.cantidad).join(', ');
-                div.innerHTML = 
-                    '<p><strong>Cliente:</strong> ' + p.cliente + '</p>' +
-                    '<p><strong>Pedido:</strong> ' + itemsTexto + '</p>' +
-                    '<p><strong>Total:</strong> S/ ' + p.total.toFixed(2) + '</p>' +
-                    '<p><small>' + (p.fecha || '') + '</small></p>';
-                container.appendChild(div);
-            });
-        });
+    async function loadStats(){ try { const r=await fetch('/api/dashboard'); const d=await r.json(); document.getElementById('stat-mesas').textContent=`${d.mesasOcupadas}/${d.totalMesas}`; document.getElementById('stat-mesas-detail').textContent=`${d.totalMesas-d.mesasOcupadas} disponibles`; document.getElementById('stat-pedidos').textContent=d.pedidosPendientes; document.getElementById('stat-ventas').textContent=money(d.ventas); } catch(e){} }
 
-        // Escuchar cuando entra un nuevo pedido en vivo
-        socket.on('nuevo_pedido_recibido', (pedido) => {
-            alert('¡Nuevo pedido recibido de ' + pedido.cliente + '!');
-        });
+    socket.on('cargar_pedidos', pedidos => {
+      const el=document.getElementById('pedidos-container');
+      if(!pedidos.length){el.innerHTML='<div class="empty-state">No hay pedidos registrados todavía.</div>';return;}
+      el.innerHTML=pedidos.map(p=>`<article class="order-card"><div class="order-main"><div><span class="order-id">Pedido #${p.id}</span><h3>${escapeHtml(p.cliente)}</h3></div><span class="status ${statusClass(p.estado)}">${escapeHtml(p.estado)}</span></div><div class="order-meta"><span>${p.fecha || 'Sin fecha'}</span><strong>${money(p.total)}</strong></div><div class="order-actions">${nextActions(p)}</div></article>`).join('');
+    });
+    socket.on('cargar_mesas', mesas => { document.getElementById('mesas-admin-container').innerHTML=mesas.map(m=>`<article class="admin-table ${m.estado.toLowerCase()}"><div><span class="table-number">${m.numero}</span><div><strong>Mesa ${m.numero}</strong><small>${m.estado}</small></div></div>${m.estado==='Reservada'?`<button class="ghost-btn" onclick="liberarMesa(${m.id})">Liberar</button>`:'<span class="free-dot">Disponible</span>'}</article>`).join(''); loadStats(); });
+    socket.on('cargar_productos', productos => { document.getElementById('productos-admin-container').innerHTML=productos.map(p=>`<article class="stock-card"><div><strong>${escapeHtml(p.nombre)}</strong><span>${money(p.precio)}</span></div><div class="stock-bar"><i style="width:${Math.min(100,Math.max(0,p.stock*5))}%"></i></div><small>${p.stock} unidades disponibles</small></article>`).join(''); });
+    socket.on('notificacion_dueno_pedido', p => { toast(`Nuevo pedido #${p.pedidoId} de ${p.cliente}`); });
 
-        // Actualizar mesas en panel admin
-        socket.on('cargar_mesas', (mesas) => {
-            const container = document.getElementById('mesas-admin-container');
-            if (!container) return;
-            container.innerHTML = '';
-            mesas.forEach(m => {
-                const div = document.createElement('div');
-                div.className = 'mesa-admin ' + m.estado.toLowerCase();
-                let botonLiberar = m.estado === 'Reservada' ? '<button onclick="liberarMesa(' + m.id + ')">Liberar</button>' : '';
-                div.innerHTML = '<span>Mesa ' + m.numero + ' - <strong>' + m.estado + '</strong></span> ' + botonLiberar;
-                container.appendChild(div);
-            });
-        });
-
-        // Actualizar stock en panel admin
-        socket.on('cargar_productos', (productos) => {
-            const container = document.getElementById('productos-admin-container');
-            if (!container) return;
-            container.innerHTML = '';
-            productos.forEach(p => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = '<p><strong>' + p.nombre + '</strong> - Stock actual: ' + p.stock + '</p>';
-                container.appendChild(div);
-            });
-        });
-
-        function liberarMesa(id) {
-            socket.emit('liberar_mesa', id);
-        }
-    </script>
+    function nextActions(p){ const map={Pendiente:[['En preparación','primary-btn small']], 'En preparación':[['Listo','primary-btn small']], Listo:[['Entregado','primary-btn small']], Entregado:[], Cancelado:[]}; return (map[p.estado]||[]).map(([state,cls])=>`<button class="${cls}" onclick="actualizarPedido(${p.id},'${state}')">${state}</button>`).join('') + (p.estado==='Pendiente'?`<button class="danger-btn" onclick="actualizarPedido(${p.id},'Cancelado')">Cancelar</button>`:''); }
+    function statusClass(s){return s.toLowerCase().replaceAll(' ','-');}
+    function escapeHtml(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+    async function actualizarPedido(id,estado){ const r=await fetch(`/api/pedidos/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado})}); const d=await r.json(); toast(d.message||d.error, r.ok?'success':'error'); }
+    async function liberarMesa(id){ const r=await fetch(`/api/mesas/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:'Libre'})}); const d=await r.json(); toast(d.message||d.error, r.ok?'success':'error'); }
+    loadStats();
+  </script>
 </body>
 </html>
