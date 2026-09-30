@@ -1,0 +1,1150 @@
+/* =========================================================
+   CAFETÍN APP - ESTILOS COMPLETOS
+   Cliente + Panel del dueño
+========================================================= */
+
+:root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --surface-soft: #fcfaf7;
+    --ink: #29231e;
+    --muted: #827a72;
+    --line: #e8e1d9;
+    --coffee: #70452d;
+    --coffee-dark: #4e2e20;
+    --cream: #efe2d4;
+    --green: #4f7b5c;
+    --green-soft: #eef7f0;
+    --red: #a84c4c;
+    --red-soft: #faf0ef;
+    --orange: #b56a39;
+    --shadow: 0 8px 25px rgba(65, 45, 30, 0.07);
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* =========================================================
+   BARRA SUPERIOR
+========================================================= */
+
+.topbar {
+    min-height: 72px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: var(--coffee);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 21px;
+}
+
+.brand strong {
+    display: block;
+    font-size: 18px;
+    line-height: 1.1;
+}
+
+.brand small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.admin-link {
+    text-decoration: none;
+    color: var(--coffee);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-link:hover {
+    color: var(--coffee-dark);
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+========================================================= */
+
+.container {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+}
+
+/* =========================================================
+   HERO CLIENTE
+========================================================= */
+
+.hero {
+    padding: 55px 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+}
+
+.hero-content {
+    min-width: 0;
+}
+
+.eyebrow {
+    color: var(--coffee);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    margin: 15px 0;
+    max-width: 700px;
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.hero h1 em {
+    color: var(--coffee);
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.hero-badge {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+}
+
+.pulse {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 7px;
+    background: #57a268;
+    border-radius: 50%;
+}
+
+/* =========================================================
+   DISTRIBUCIÓN CLIENTE
+========================================================= */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
+    align-items: start;
+    padding-bottom: 70px;
+}
+
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* =========================================================
+   PANELES
+========================================================= */
+
+.panel,
+.order-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+}
+
+.order-panel {
+    position: sticky;
+    top: 95px;
+}
+
+/* =========================================================
+   CABECERAS DE SECCIÓN
+========================================================= */
+
+.section-head,
+.order-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.step {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--cream);
+    color: var(--coffee);
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.section-head h2,
+.order-head h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+}
+
+.section-head p,
+.order-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.selection-pill {
+    padding: 9px 13px;
+    background: #f6f1eb;
+    color: var(--coffee);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MESAS CLIENTE
+========================================================= */
+
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.table-card {
+    min-height: 135px;
+    padding: 15px;
+    border: 1px solid var(--line);
+    border-radius: 17px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.table-card:hover:not(:disabled) {
+    transform: translateY(-3px);
+    border-color: #b98e72;
+    box-shadow: 0 8px 20px rgba(65, 45, 30, 0.08);
+}
+
+.table-card.free {
+    background: #fbfdfb;
+}
+
+.table-card.busy {
+    background: var(--red-soft);
+    color: #9a7772;
+    cursor: not-allowed;
+}
+
+.table-card.selected {
+    outline: 3px solid var(--coffee);
+    outline-offset: 2px;
+}
+
+.table-icon {
+    font-size: 30px;
+    color: var(--green);
+}
+
+.table-card.busy .table-icon {
+    color: var(--red);
+}
+
+.table-card strong {
+    font-size: 15px;
+}
+
+.table-card small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =========================================================
+   PRODUCTOS
+========================================================= */
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.product-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 17px;
+    transition: 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(65, 45, 30, 0.06);
+}
+
+.product-icon {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #f5eee7;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+}
+
+.product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.product-info h3 {
+    margin: 0 0 6px;
+    font-size: 14px;
+}
+
+.product-info strong {
+    color: var(--coffee);
+    font-size: 15px;
+}
+
+.stock {
+    display: block;
+    margin-top: 5px;
+    color: var(--green);
+    font-size: 10px;
+}
+
+.stock.low {
+    color: var(--orange);
+}
+
+.add-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--coffee);
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: var(--coffee-dark);
+}
+
+.add-btn:disabled {
+    background: #d8d0c8;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   PEDIDO / CARRITO
+========================================================= */
+
+.order-panel label {
+    display: block;
+    margin: 8px 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.input {
+    width: 100%;
+    padding: 13px;
+    outline: none;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fcfbfa;
+}
+
+.input:focus {
+    border-color: #b98e72;
+    box-shadow: 0 0 0 3px #f1e3d8;
+}
+
+.cart-list {
+    min-height: 150px;
+    margin: 20px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.empty-state {
+    padding: 50px 15px;
+    text-align: center;
+    color: #9b928a;
+    font-size: 12px;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed var(--line);
+}
+
+.cart-item:last-child {
+    border-bottom: 0;
+}
+
+.cart-item strong {
+    font-size: 13px;
+}
+
+.cart-item span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.qty {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.qty button {
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    background: #f0ebe5;
+    color: var(--coffee);
+    cursor: pointer;
+}
+
+.qty b {
+    min-width: 18px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.total-row span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.total-row strong {
+    color: var(--coffee);
+    font-size: 25px;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 14px 17px;
+    border-radius: 13px;
+    background: var(--coffee);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.primary-btn:hover {
+    background: var(--coffee-dark);
+}
+
+.primary-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.secure-note {
+    margin-top: 13px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 10px;
+}
+
+/* =========================================================
+   NOTIFICACIONES
+========================================================= */
+
+.toast {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 200;
+    max-width: 360px;
+    padding: 13px 17px;
+    border-radius: 13px;
+    background: #29231e;
+    color: white;
+    font-size: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   PANEL DEL DUEÑO
+========================================================= */
+
+.admin-container {
+    width: min(1180px, 92%);
+    margin: 0 auto;
+    padding: 38px 0 70px;
+}
+
+.admin-header {
+    margin-bottom: 30px;
+}
+
+.admin-header h1 {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-size: 42px;
+    line-height: 1.1;
+}
+
+.admin-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.admin-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 9px 14px;
+    border-radius: 20px;
+    background: var(--green-soft);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   ESTADÍSTICAS ADMIN
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    min-width: 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+.stat-label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stat-value {
+    display: block;
+    color: var(--coffee);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.stat-description {
+    display: block;
+    margin-top: 7px;
+    color: #9a928a;
+    font-size: 11px;
+}
+
+/* =========================================================
+   SECCIONES ADMIN
+========================================================= */
+
+.admin-section {
+    margin-bottom: 28px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+.admin-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.admin-section-header h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 21px;
+}
+
+.admin-section-header p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================================================
+   PEDIDOS ADMIN
+========================================================= */
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.order-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 25px;
+    padding: 22px;
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
+    border-radius: 17px;
+}
+
+.order-info {
+    min-width: 0;
+}
+
+.order-number {
+    margin: 0 0 10px;
+    color: var(--coffee);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.order-client {
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.order-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.order-status {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 10px;
+    padding: 6px 10px;
+    border-radius: 15px;
+    background: #f3eadf;
+    color: var(--coffee);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.order-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.order-actions button,
+.order-actions select {
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid #ddd2c8;
+    border-radius: 10px;
+    background: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.order-actions button {
+    background: var(--coffee);
+    border-color: var(--coffee);
+    color: white;
+    font-weight: 700;
+}
+
+.order-actions button:hover {
+    background: var(--coffee-dark);
+}
+
+.order-actions .cancel-btn {
+    background: white;
+    border-color: #e2c4c4;
+    color: var(--red);
+}
+
+/* =========================================================
+   MESAS ADMIN
+========================================================= */
+
+.mesas-grid,
+.tables-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.mesa-admin-card {
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.mesa-admin-card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-size: 16px;
+}
+
+.mesa-admin-card span {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.mesa-admin-card button {
+    padding: 9px 13px;
+    border-radius: 9px;
+    background: var(--coffee);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* =========================================================
+   STOCK ADMIN
+========================================================= */
+
+.stock-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.stock-card {
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.stock-card h3 {
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-size: 14px;
+}
+
+.stock-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================================================
+   TABLAS
+========================================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 13px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 12px;
+}
+
+th {
+    color: var(--coffee);
+    background: #faf7f3;
+    font-weight: 700;
+}
+
+td {
+    color: var(--ink);
+}
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+
+.status,
+.badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 5px 9px;
+    border-radius: 14px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.status.available,
+.badge.available {
+    background: var(--green-soft);
+    color: var(--green);
+}
+
+.status.busy,
+.badge.busy {
+    background: var(--red-soft);
+    color: var(--red);
+}
+
+.status.pending,
+.badge.pending {
+    background: #fff4e7;
+    color: var(--orange);
+}
+
+/* =========================================================
+   BOTONES GENERALES
+========================================================= */
+
+button {
+    transition: 0.2s ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(112, 69, 45, 0.2);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   EVITAR TEXTOS AMONTONADOS
+========================================================= */
+
+.admin-container p,
+.admin-container span,
+.admin-container strong,
+.admin-container h1,
+.admin-container h2,
+.admin-container h3,
+.container p,
+.container span,
+.container strong,
+.container h1,
+.container h2,
+.container h3 {
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .order-panel {
+        position: static;
+    }
+
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-badge {
+        margin-top: 5px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .order-card {
+        grid-template-columns: 1fr;
+    }
+
+    .order-actions {
+        justify-content: flex-start;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET PEQUEÑA
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .tables-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mesas-grid,
+    .tables-admin-grid,
+    .stock-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-section {
+        padding: 22px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .topbar {
+        min-height: 65px;
+        padding: 10px 4%;
+    }
+
+    .brand strong {
+        font-size: 16px;
+    }
+
+    .brand small {
+        font-size: 10px;
+    }
+
+    .admin-link {
+        font-size: 11px;
+    }
+
+    .container,
+    .admin-container {
+        width: 94%;
+    }
+
+    .hero {
+        padding: 38px 0 28px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .panel,
+    .order-panel,
+    .admin-section {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .section-head,
+    .admin-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tables-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .table-card {
+        min-height: 115px;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mesas-grid,
+    .tables-admin-grid,
+    .stock-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-card {
+        padding: 17px;
+    }
+
+    .order-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .order-actions button,
+    .order-actions select {
+        flex: 1;
+    }
+
+    .toast {
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        max-width: none;
+    }
+}
+
+/* =========================================================
+   CELULAR PEQUEÑO
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .hero h1 {
+        font-size: 33px;
+    }
+
+    .tables-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .table-card {
+        min-height: 105px;
+    }
+
+    .table-icon {
+        font-size: 25px;
+    }
+
+    .product-card {
+        padding: 13px;
+    }
+
+    .product-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .admin-header h1 {
+        font-size: 32px;
+    }
+}
