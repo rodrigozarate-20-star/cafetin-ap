@@ -2,54 +2,66 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cafetín App - gestión de mesas y pedidos en tiempo real">
-  <title>Cafetín App | Reservas y pedidos</title>
-  <script src="/socket.io/socket.io.js"></script>
-  <link rel="stylesheet" href="/estilo.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cafetín: elige tu mesa y haz tu pedido en tiempo real.">
+  <title>Cafetín · Pide desde tu mesa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <div class="awning" aria-hidden="true"></div>
   <header class="topbar">
-    <div class="brand"><span class="brand-mark">☕</span><div><strong>Cafetín</strong><small>Reservas & pedidos</small></div></div>
-    <a class="admin-link" href="/admin.html">Panel del dueño <span>→</span></a>
+    <a class="brand" href="./">Cafetín<small>Mesas y pedidos</small></a>
+    <a class="nav-link" href="admin">Panel del dueño</a>
   </header>
 
-  <main class="container">
-    <section class="hero">
+  <main class="wrap">
+    <section class="lead">
       <div>
-        <span class="eyebrow">ATENCIÓN EN TIEMPO REAL</span>
-        <h1>Tu mesa, tu pedido,<br><em>sin complicaciones.</em></h1>
-        <p>Selecciona una mesa disponible, arma tu pedido y envíalo al cafetín en segundos.</p>
+        <h1>Pide desde tu mesa.</h1>
+        <p>Elige una mesa libre, arma tu pedido y llega directo a la cocina.</p>
       </div>
-      <div class="hero-badge"><span class="pulse"></span> Sistema conectado</div>
+      <span id="live" class="live off"><i class="dot"></i><span>Conectando…</span></span>
     </section>
 
-    <section class="layout">
-      <div class="main-column">
+    <div class="layout">
+      <div class="stack">
         <section class="panel">
-          <div class="section-head"><div><span class="step">01</span><div><h2>Elige tu mesa</h2><p>Las mesas se actualizan automáticamente.</p></div></div><span id="mesa-elegida" class="selection-pill">Ninguna</span></div>
-          <div id="mesas-container" class="tables-grid" aria-live="polite"></div>
+          <div class="panel-head">
+            <div><h2>Mesas</h2><p>Toca una mesa libre para reservarla con tu pedido.</p></div>
+            <span id="mesa-elegida" class="chip quiet">Sin mesa</span>
+          </div>
+          <div id="mesas" class="floor" aria-live="polite"><div class="empty">Cargando mesas…</div></div>
         </section>
 
-        <section class="panel">
-          <div class="section-head"><div><span class="step">02</span><div><h2>Arma tu pedido</h2><p>Consulta el stock disponible en tiempo real.</p></div></div></div>
-          <div id="productos-container" class="products-grid"></div>
+        <section class="panel board">
+          <div class="panel-head"><div><h2>Carta de hoy</h2><p>El stock se actualiza en vivo.</p></div></div>
+          <div id="carta" class="menu"><div class="empty">Cargando carta…</div></div>
         </section>
       </div>
 
-      <aside class="order-panel">
-        <div class="order-head"><span class="step">03</span><div><h2>Tu pedido</h2><p>Revisa antes de enviar.</p></div></div>
-        <label for="nombre-cliente">Nombre del cliente</label>
-        <input id="nombre-cliente" class="input" type="text" maxlength="60" placeholder="Ej. Florcita">
-        <div id="resumen-pedido" class="cart-list"><div class="empty-state">Aún no agregas productos.</div></div>
-        <div class="total-row"><span>Total</span><strong id="total-consumo">S/ 0.00</strong></div>
-        <button id="confirmar-btn" class="primary-btn" type="button">Enviar pedido <span>→</span></button>
-        <p class="secure-note">● Los cambios se sincronizan en tiempo real</p>
+      <aside class="ticket" aria-label="Tu pedido">
+        <h2>Tu pedido</h2>
+        <p id="ticket-mesa" class="row-sel">Todavía no elegiste mesa (opcional).</p>
+        <label for="cliente">Tu nombre</label>
+        <input id="cliente" class="input" maxlength="60" autocomplete="given-name" placeholder="Ej. Florcita">
+        <div id="carrito" class="cart"></div>
+        <div class="total"><span>Total</span><strong id="total">S/ 0.00</strong></div>
+        <button id="enviar" class="btn" type="button">Enviar pedido</button>
+
+        <div id="track" class="track" hidden>
+          <h3 id="track-title"></h3>
+          <ol class="steps" id="steps">
+            <li>Recibido</li><li>Preparando</li><li>Listo</li><li>Entregado</li>
+          </ol>
+        </div>
       </aside>
-    </section>
+    </div>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/app.js"></script>
+  <script type="module" src="js/cliente.js"></script>
 </body>
 </html>
